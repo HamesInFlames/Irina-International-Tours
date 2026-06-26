@@ -15,7 +15,7 @@ export function Packages() {
     const tours = toursByCategory(active.id as Category)
     return (
       <>
-        <PageHero seed={`cat-${active.id}`} image={categoryPhoto(active.id)} eyebrow={t('nav.packages')} title={active.label} sub={active.blurb} />
+        <PageHero seed={`cat-${active.id}`} image={categoryPhoto(active.id)} eyebrow={t('nav.packages')} title={lang === 'ru' ? active.labelRu : active.label} sub={lang === 'ru' ? active.blurbRu : active.blurb} />
         <Section tone="paper">
           <Link to="/packages" className="mb-8 inline-flex items-center gap-1 text-sm font-semibold text-teal hover:text-teal-dark">
             ← {t('common.backToPackages')}
@@ -43,15 +43,15 @@ export function Packages() {
             <Reveal key={c.id} delay={i * 0.06}>
               <Link to={`/packages/${c.id}`} className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-line transition duration-300 hover:-translate-y-1 hover:shadow-lift">
                 <div className="relative aspect-[16/10] overflow-hidden">
-                  <img src={categoryPhoto(c.id) ?? img(`cat-${c.id}`, 700, 520)} alt={c.label} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  <img src={categoryPhoto(c.id) ?? img(`cat-${c.id}`, 700, 520)} alt={lang === 'ru' ? c.labelRu : c.label} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-navy/35 to-transparent" />
                   <span className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-navy">
                     {toursByCategory(c.id).length} {lang === 'ru' ? 'туров' : 'tours'}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-display text-xl font-bold text-navy transition group-hover:text-teal">{c.label}</h3>
-                  <p className="mt-1 flex-1 text-sm leading-relaxed text-body">{c.blurb}</p>
+                  <h3 className="font-display text-xl font-bold text-navy transition group-hover:text-teal">{lang === 'ru' ? c.labelRu : c.label}</h3>
+                  <p className="mt-1 flex-1 text-sm leading-relaxed text-body">{lang === 'ru' ? c.blurbRu : c.blurb}</p>
                   <span className="mt-4 inline-block text-sm font-bold text-teal transition group-hover:translate-x-1">
                     {lang === 'ru' ? 'Смотреть туры' : 'View tours'} →
                   </span>

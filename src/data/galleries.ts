@@ -5,18 +5,21 @@ import { placeholder } from './placeholder'
 export interface Album {
   id: string
   title: string
+  titleRu: string
   count: number
 }
 
 export const ALBUMS: Album[] = [
-  { id: 'niagara-falls', title: 'Niagara Falls', count: 12 },
-  { id: 'toronto', title: 'Toronto', count: 10 },
-  { id: 'french-canada', title: 'French Canada', count: 14 },
-  { id: 'atlantic-provinces', title: 'Atlantic Provinces', count: 11 },
-  { id: 'british-columbia', title: 'British Columbia', count: 9 },
-  { id: 'italy', title: 'Italy', count: 16 },
-  { id: 'uae', title: 'United Arab Emirates', count: 8 },
+  { id: 'niagara-falls', title: 'Niagara Falls', titleRu: 'Ниагарский водопад', count: 12 },
+  { id: 'toronto', title: 'Toronto', titleRu: 'Торонто', count: 10 },
+  { id: 'french-canada', title: 'French Canada', titleRu: 'Французская Канада', count: 14 },
+  { id: 'atlantic-provinces', title: 'Atlantic Provinces', titleRu: 'Атлантические провинции', count: 11 },
+  { id: 'british-columbia', title: 'British Columbia', titleRu: 'Британская Колумбия', count: 9 },
+  { id: 'italy', title: 'Italy', titleRu: 'Италия', count: 16 },
+  { id: 'uae', title: 'United Arab Emirates', titleRu: 'ОАЭ', count: 8 },
 ]
+
+export const albumTitle = (a: Album, lang: string) => (lang === 'ru' ? a.titleRu : a.title)
 
 export const albumImg = (albumId: string, i: number, w = 600, h = 600) =>
   placeholder(`${albumId}-${i}`, w, h)

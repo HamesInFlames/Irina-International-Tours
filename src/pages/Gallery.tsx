@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLang } from '../i18n/LanguageContext'
-import { ALBUMS, type Album } from '../data/galleries'
+import { ALBUMS, albumTitle, type Album } from '../data/galleries'
 import { galleryCover, PHOTO_POOL, BANNER } from '../data/media'
 import { PageHero, Section, Reveal, SectionHeading } from '../components/ui'
 
@@ -33,14 +33,14 @@ export function Gallery() {
                 <Reveal key={a.id} delay={i * 0.05}>
                   <button onClick={() => setAlbum(a)} className="group flex h-full w-full flex-col overflow-hidden rounded-2xl bg-white text-left shadow-card ring-1 ring-line transition duration-300 hover:-translate-y-1 hover:shadow-lift">
                     <div className="relative aspect-[16/10] overflow-hidden">
-                      <img src={galleryCover(a.id) ?? PHOTO_POOL[0]} alt={a.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <img src={galleryCover(a.id) ?? PHOTO_POOL[0]} alt={albumTitle(a, lang)} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-navy/35 to-transparent" />
                       <span className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-navy">
                         {a.count} {lang === 'ru' ? 'фото' : 'photos'}
                       </span>
                     </div>
                     <div className="flex flex-1 items-center justify-between p-5">
-                      <h3 className="font-display text-xl font-bold text-navy transition group-hover:text-teal">{a.title}</h3>
+                      <h3 className="font-display text-xl font-bold text-navy transition group-hover:text-teal">{albumTitle(a, lang)}</h3>
                       <span className="text-sm font-bold text-teal transition group-hover:translate-x-1">{lang === 'ru' ? 'Открыть' : 'View'} →</span>
                     </div>
                   </button>
@@ -53,7 +53,7 @@ export function Gallery() {
             <button onClick={() => setAlbum(null)} className="mb-8 inline-flex items-center gap-1 text-sm font-semibold text-teal hover:text-teal-dark">
               ← {lang === 'ru' ? 'Все альбомы' : 'All albums'}
             </button>
-            <h2 className="display text-3xl font-bold text-navy">{album.title}</h2>
+            <h2 className="display text-3xl font-bold text-navy">{albumTitle(album, lang)}</h2>
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {photos.map((src, i) => (
                 <button key={i} onClick={() => setLightbox(i)} className="group overflow-hidden rounded-xl ring-1 ring-line">

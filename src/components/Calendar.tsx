@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext'
 import { DEPARTURES } from '../data/schedule'
-import { tourById } from '../data/tours'
+import { loc, tourById } from '../data/tours'
 
 const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 const MONTHS_RU = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
@@ -98,14 +98,14 @@ export function Calendar() {
                       <Link
                         key={j}
                         to={`/tour/${tour.id}`}
-                        title={tour.name}
+                        title={loc(tour, lang).name}
                         className={`block truncate rounded px-1.5 py-1 text-[11px] font-semibold leading-tight transition ${
                           dep.soldOut
                             ? 'bg-gray-100 text-gray-400 line-through'
                             : 'bg-teal/10 text-teal hover:bg-teal hover:text-white'
                         }`}
                       >
-                        {tour.name}
+                        {loc(tour, lang).name}
                         {dep.soldOut && <span className="ml-1 no-underline">· {t('common.soldOut')}</span>}
                       </Link>
                     )
@@ -140,7 +140,7 @@ export function Calendar() {
                       <span className="mt-0.5 text-[10px] font-semibold uppercase opacity-70">{wd}</span>
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className={`block text-sm font-semibold text-navy ${dep.soldOut ? 'line-through opacity-60' : ''}`}>{tour.name}</span>
+                      <span className={`block text-sm font-semibold text-navy ${dep.soldOut ? 'line-through opacity-60' : ''}`}>{loc(tour, lang).name}</span>
                       <span className={`text-xs font-medium ${dep.soldOut ? 'text-coral' : 'text-teal'}`}>
                         {dep.soldOut ? t('common.soldOut') : t('common.available')}
                       </span>
