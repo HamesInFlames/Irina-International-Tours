@@ -39,6 +39,12 @@ export function Calendar() {
   for (let d = 1; d <= daysInMonth; d++) cells.push(d)
   while (cells.length % 7 !== 0) cells.push(null)
 
+  // Departures in the visible month, ordered — used for the mobile agenda list.
+  const monthPrefix = `${year}-${String(month + 1).padStart(2, '0')}`
+  const monthDeps = DEPARTURES
+    .filter((d) => d.date.startsWith(monthPrefix))
+    .sort((a, b) => a.date.localeCompare(b.date))
+
   return (
     <div className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-line">
       {/* Month nav */}
@@ -54,6 +60,8 @@ export function Calendar() {
         </button>
       </div>
 
+      {/* Desktop grid (hidden on phones) */}
+      <div className="hidden sm:block">
       {/* Day-of-week header */}
       <div className="grid grid-cols-7 border-b border-line bg-paper text-center text-xs font-bold uppercase tracking-wide text-muted">
         {dow.map((d) => <div key={d} className="py-2">{d}</div>)}
@@ -108,9 +116,46 @@ export function Calendar() {
           })}
         </motion.div>
       </AnimatePresence>
+      </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap items-center gap-4 px-4 py-3 text-xs text-muted sm:px-6">
+      {/* Mobile agenda list (phones) */}
+      <div className="sm:hidden">
+        {monthDeps.length === 0 ? (
+          <p className="px-4 py-8 text-center text-sm text-muted">
+            {lang === 'ru' ? 'В этом месяце отправлений нет — другие даты по запросу.' : 'No departures this month — other dates available by request.'}
+          </p>
+        ) : (
+          <ul className="divide-y divide-line">
+            {monthDeps.map((dep, j) => {
+              const tour = tourById(dep.tourId)
+              if (!tour) return null
+              const day = parseInt(dep.date.slice(8), 10)
+              const wd = dow[new Date(year, month, day).getDay()]
+              const isToday = dep.date === TODAY
+              return (
+                <li key={j}>
+                  <Link to={`/tour/${tour.id}`} className="flex items-center gap-3 px-4 py-3 transition active:bg-paper">
+                    <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-lg ${isToday ? 'bg-coral text-white' : 'bg-navy/5 text-navy'}`}>
+                      <span className="text-base font-bold leading-none">{day}</span>
+                      <span className="mt-0.5 text-[10px] font-semibold uppercase opacity-70">{wd}</span>
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className={`block text-sm font-semibold text-navy ${dep.soldOut ? 'line-through opacity-60' : ''}`}>{tour.name}</span>
+                      <span className={`text-xs font-medium ${dep.soldOut ? 'text-coral' : 'text-teal'}`}>
+                        {dep.soldOut ? t('common.soldOut') : t('common.available')}
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-teal">→</span>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </div>
+
+      {/* Legend (desktop grid only) */}
+      <div className="hidden flex-wrap items-center gap-4 px-4 py-3 text-xs text-muted sm:flex sm:px-6">
         <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-teal/30" /> {t('schedule.legendTour')}</span>
         <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-gray-200" /> {t('schedule.legendSold')}</span>
         <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-coral" /> {t('schedule.today')}</span>
