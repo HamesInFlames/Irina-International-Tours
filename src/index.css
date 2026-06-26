@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Irina International Tours — design tokens
+   Palette preserved from the original torontotrip.com site,
+   modernized for spacing/typography.
+   ============================================================ */
+@theme {
+  --color-navy: #114581;        /* primary brand */
+  --color-navy-dark: #0d3666;
+  --color-navy-light: #1b5ca8;
+  --color-teal: #1ba4c4;        /* accent / sub-nav */
+  --color-teal-dark: #1689a4;
+  --color-coral: #e9513c;       /* highlight / contact band */
+  --color-coral-dark: #cf402c;
+  --color-ink: #2b2f36;         /* headings */
+  --color-body: #565656;        /* body text (original) */
+  --color-muted: #7c8591;
+  --color-paper: #f7f9fb;       /* page bg */
+  --color-panel: #ffffff;
+  --color-line: #e6ebf1;
+  --color-gold: #c9a227;        /* TICO/trust touch */
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", "Arial", "Helvetica", sans-serif;
+  --font-display: "Playfair Display", "Georgia", "Times New Roman", serif;
+
+  --shadow-card: 0 1px 2px rgba(17, 69, 129, 0.04), 0 8px 24px rgba(17, 69, 129, 0.08);
+  --shadow-lift: 0 12px 40px rgba(17, 69, 129, 0.16);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-body);
+    background: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Default heading colour; any Tailwind text-* utility overrides this. */
+  h1, h2, h3, h4 { color: var(--color-ink); }
+}
+
+/* Reusable composition utilities */
+.shell { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: 1.25rem; }
+
+.display { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+.link-underline {
+  background-image: linear-gradient(var(--color-teal), var(--color-teal));
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease;
+}
+.link-underline:hover { background-size: 100% 2px; }
+
+/* Thin elegant scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #c3cedb; border-radius: 999px; border: 2px solid var(--color-paper); }
+::-webkit-scrollbar-thumb:hover { background: #aab9c9; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
