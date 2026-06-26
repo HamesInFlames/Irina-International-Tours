@@ -22,16 +22,25 @@ export function Header() {
           <a href={SITE.phoneHref} className="text-xs font-medium text-white/85 hover:text-white">
             ☎ {SITE.phone}
           </a>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <LanguageSwitcher variant="bar" />
             <a
               href={SITE.facebook}
               target="_blank"
               rel="noreferrer"
               aria-label="Facebook"
-              className="grid h-5 w-5 place-items-center rounded bg-white/15 text-xs font-bold hover:bg-white/25"
+              className="grid h-6 w-6 place-items-center rounded-full bg-white/15 text-white transition hover:bg-white/30"
             >
-              f
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor"><path d="M14 13.5h2.5l1-4H14V7c0-1 .5-2 2-2h2V1.5C17.3 1.3 16 1 14.7 1 11.8 1 10 2.7 10 5.7v3.8H6.5v4H10V23h4z" /></svg>
+            </a>
+            <a
+              href={SITE.instagram}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="grid h-6 w-6 place-items-center rounded-full bg-white/15 text-white transition hover:bg-white/30"
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none" /></svg>
             </a>
           </div>
         </div>

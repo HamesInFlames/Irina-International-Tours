@@ -11,7 +11,8 @@ export const SITE = {
     line2: 'Thornhill, ON  L4J 3M4',
   },
   tico: 'TICO Reg. No. 50007929',
-  facebook: 'https://www.facebook.com/',
+  facebook: 'https://www.facebook.com/IITAGENCY#',
+  instagram: 'https://www.instagram.com/ii_tours',
   founded: 1989,
 }
 

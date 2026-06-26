@@ -26,6 +26,14 @@ export function Footer() {
           <div>
             <h3 className="display text-2xl font-bold text-white">{t('contact.title')}</h3>
             <p className="mt-2 max-w-xs text-sm text-white/85">{t('footer.tagline')}</p>
+            <div className="mt-4 flex items-center gap-3">
+              <a href={SITE.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" className="grid h-9 w-9 place-items-center rounded-full bg-white/15 text-white transition hover:bg-white/30">
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M14 13.5h2.5l1-4H14V7c0-1 .5-2 2-2h2V1.5C17.3 1.3 16 1 14.7 1 11.8 1 10 2.7 10 5.7v3.8H6.5v4H10V23h4z" /></svg>
+              </a>
+              <a href={SITE.instagram} target="_blank" rel="noreferrer" aria-label="Instagram" className="grid h-9 w-9 place-items-center rounded-full bg-white/15 text-white transition hover:bg-white/30">
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none" /></svg>
+              </a>
+            </div>
           </div>
           <div className="text-sm">
             <p className="font-bold uppercase tracking-wide text-white/70">{t('contact.office')}</p>
