@@ -31,14 +31,17 @@ export function Gallery() {
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {ALBUMS.map((a, i) => (
                 <Reveal key={a.id} delay={i * 0.05}>
-                  <button onClick={() => setAlbum(a)} className="group relative block w-full overflow-hidden rounded-2xl text-left shadow-card ring-1 ring-line">
-                    <div className="aspect-[4/3] overflow-hidden">
+                  <button onClick={() => setAlbum(a)} className="group flex h-full w-full flex-col overflow-hidden rounded-2xl bg-white text-left shadow-card ring-1 ring-line transition duration-300 hover:-translate-y-1 hover:shadow-lift">
+                    <div className="relative aspect-[16/10] overflow-hidden">
                       <img src={galleryCover(a.id) ?? PHOTO_POOL[0]} alt={a.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy/35 to-transparent" />
+                      <span className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-navy">
+                        {a.count} {lang === 'ru' ? 'фото' : 'photos'}
+                      </span>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy/85 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-5 text-white">
-                      <h3 className="font-display text-xl font-bold">{a.title}</h3>
-                      <p className="text-sm text-white/80">{a.count} {lang === 'ru' ? 'фото' : 'photos'}</p>
+                    <div className="flex flex-1 items-center justify-between p-5">
+                      <h3 className="font-display text-xl font-bold text-navy transition group-hover:text-teal">{a.title}</h3>
+                      <span className="text-sm font-bold text-teal transition group-hover:translate-x-1">{lang === 'ru' ? 'Открыть' : 'View'} →</span>
                     </div>
                   </button>
                 </Reveal>
