@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext'
+import { daysLabel, fmtPrice } from '../i18n/format'
 import { img, loc, tourById } from '../data/tours'
 import { tourPhoto, ICON } from '../data/media'
 import { BookingModal } from '../components/BookingModal'
@@ -16,9 +17,9 @@ export function TourDetail() {
   const tt = loc(tour, lang)
 
   const info = [
-    { icon: ICON.time, label: t('common.duration'), value: `${tour.days} ${t('common.days')}` },
-    { icon: ICON.price, label: t('common.double'), value: `$${tour.priceDouble.toLocaleString()} CAD` },
-    ...(tour.priceSingle ? [{ icon: ICON.price, label: t('common.single'), value: `$${tour.priceSingle.toLocaleString()} CAD` }] : []),
+    { icon: ICON.time, label: t('common.duration'), value: daysLabel(tour.days, lang) },
+    { icon: ICON.price, label: t('common.double'), value: `${fmtPrice(tour.priceDouble, lang)} CAD` },
+    ...(tour.priceSingle ? [{ icon: ICON.price, label: t('common.single'), value: `${fmtPrice(tour.priceSingle, lang)} CAD` }] : []),
   ]
 
   return (
@@ -80,7 +81,7 @@ export function TourDetail() {
           <div className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-line">
             <div className="bg-navy px-6 py-5 text-white">
               <p className="text-sm text-white/70">{t('common.from')}</p>
-              <p className="font-display text-3xl font-bold">${tour.priceDouble.toLocaleString()} <span className="text-base font-normal text-white/70">CAD</span></p>
+              <p className="font-display text-3xl font-bold">{fmtPrice(tour.priceDouble, lang)} <span className="text-base font-normal text-white/70">CAD</span></p>
               <p className="text-xs text-white/60">{t('common.perPerson')} · {t('common.double')}</p>
             </div>
             <dl className="divide-y divide-line px-6 text-sm">
