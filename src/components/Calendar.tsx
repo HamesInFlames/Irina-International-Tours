@@ -122,46 +122,42 @@ export function Calendar() {
           {empty && (
             <p className="border-b border-line px-4 py-4 text-center text-base text-body">{t('schedule.noDepartures')}</p>
           )}
-          {/* On phones the month grid scrolls sideways so day cells stay readable */}
-          <div className="overflow-x-auto">
-            <div className="min-w-[640px]">
-              <div className="grid grid-cols-7 border-b border-line bg-paper text-center text-sm font-bold text-body">
-                {Array.from({ length: 7 }, (_, i) => dow[(i + weekStart) % 7]).map((d) => (
-                  <div key={d} className="py-2">{d}</div>
-                ))}
-              </div>
-              <div className="grid grid-cols-7">
-                {cells.map((day, i) => {
-                  if (day === null) return <div key={i} className="min-h-24 border-b border-r border-line bg-paper/40 sm:min-h-28" />
-                  const date = iso(year, month, day)
-                  const deps = monthDeps.filter((d) => d.date === date)
-                  const isToday = date === todayIso
-                  return (
-                    <div key={i} className={`min-h-24 border-b border-r border-line p-1.5 align-top sm:min-h-28 ${isToday ? 'bg-amber-50' : 'bg-white'}`}>
-                      <div className={`mb-1 inline-flex h-6 w-6 items-center justify-center rounded-full text-sm font-bold ${isToday ? 'bg-coral text-white' : 'text-body'}`}>
-                        {day}
-                      </div>
-                      <div className="space-y-1">
-                        {deps.map((dep) => (
-                          <Link
-                            key={`${dep.date}-${dep.tourId}`}
-                            to={`/tour/${dep.tour.id}`}
-                            className={`block rounded px-1.5 py-1 text-[13px] font-semibold leading-snug transition ${
-                              dep.soldOut
-                                ? 'bg-gray-50 text-body'
-                                : 'text-navy underline decoration-navy/40 underline-offset-2 hover:bg-navy hover:text-white'
-                            }`}
-                          >
-                            {loc(dep.tour, lang).name}
-                            {dep.soldOut && <span className="font-bold text-coral-dark"> · {t('common.soldOut')}</span>}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+          {/* One month grid for every screen size — compact cells on phones, roomy on desktop */}
+          <div className="grid grid-cols-7 border-b border-line bg-paper text-center text-[11px] font-bold text-body sm:text-sm">
+            {Array.from({ length: 7 }, (_, i) => dow[(i + weekStart) % 7]).map((d) => (
+              <div key={d} className="py-1.5 sm:py-2">{d}</div>
+            ))}
+          </div>
+          <div className="grid grid-cols-7" lang={lang}>
+            {cells.map((day, i) => {
+              if (day === null) return <div key={i} className="min-h-16 border-b border-r border-line bg-paper/40 sm:min-h-28" />
+              const date = iso(year, month, day)
+              const deps = monthDeps.filter((d) => d.date === date)
+              const isToday = date === todayIso
+              return (
+                <div key={i} className={`min-h-16 border-b border-r border-line p-0.5 align-top sm:min-h-28 sm:p-1.5 ${isToday ? 'bg-amber-50' : 'bg-white'}`}>
+                  <div className={`mb-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold sm:mb-1 sm:h-6 sm:w-6 sm:text-sm ${isToday ? 'bg-coral text-white' : 'text-body'}`}>
+                    {day}
+                  </div>
+                  <div className="space-y-0.5 sm:space-y-1">
+                    {deps.map((dep) => (
+                      <Link
+                        key={`${dep.date}-${dep.tourId}`}
+                        to={`/tour/${dep.tour.id}`}
+                        className={`block hyphens-auto break-words rounded px-0.5 py-0.5 text-[10px] font-semibold leading-tight transition sm:px-1.5 sm:py-1 sm:text-[13px] sm:leading-snug ${
+                          dep.soldOut
+                            ? 'bg-gray-50 text-body'
+                            : 'text-navy underline decoration-navy/40 underline-offset-2 hover:bg-navy hover:text-white'
+                        }`}
+                      >
+                        {loc(dep.tour, lang).name}
+                        {dep.soldOut && <span className="font-bold text-coral-dark"> · {t('common.soldOut')}</span>}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </motion.div>
       </AnimatePresence>
