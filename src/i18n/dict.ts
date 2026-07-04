@@ -73,10 +73,13 @@ const en: Dict = {
 
   // schedule
   'schedule.title': 'Tour Schedule 2026',
-  'schedule.sub': 'Select a tour from the calendar below. Other dates for 1-day tours available by request.',
+  'schedule.sub': 'Select a tour from the schedule below. Other dates for 1-day tours available by request.',
   'schedule.today': 'Today',
-  'schedule.legendTour': 'Departure',
-  'schedule.legendSold': 'Sold out',
+  'schedule.viewList': 'List',
+  'schedule.viewGrid': 'Calendar',
+  'schedule.jumpTo': 'Jump to month',
+  'schedule.noDepartures': 'No departures this month — choose another month above, or call us.',
+  'schedule.phonePrompt': 'Prefer to book by phone?',
 
   // forms
   'form.name': 'Name',
@@ -189,10 +192,13 @@ const ru: Dict = {
   'common.backToPackages': 'Назад к турам',
 
   'schedule.title': 'Расписание туров 2026',
-  'schedule.sub': 'Выберите тур в календаре ниже. Другие даты однодневных туров — по запросу.',
+  'schedule.sub': 'Выберите тур в расписании ниже. Однодневные туры возможны на любые даты по запросу.',
   'schedule.today': 'Сегодня',
-  'schedule.legendTour': 'Отправление',
-  'schedule.legendSold': 'Мест нет',
+  'schedule.viewList': 'Список',
+  'schedule.viewGrid': 'Календарь',
+  'schedule.jumpTo': 'Выбрать месяц',
+  'schedule.noDepartures': 'В этом месяце отправлений нет — выберите другой месяц выше или позвоните нам.',
+  'schedule.phonePrompt': 'Удобнее заказать по телефону?',
 
   'form.name': 'Имя',
   'form.email': 'Электронная почта',
