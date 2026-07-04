@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext'
+import { daysLabel, fmtPrice } from '../i18n/format'
 import { img, loc, type Tour } from '../data/tours'
 import { tourPhoto } from '../data/media'
 
@@ -23,7 +24,7 @@ export function TourCard({ tour }: { tour: Tour }) {
           {tt.region}
         </span>
         <span className="absolute bottom-3 right-3 rounded-full bg-coral px-3 py-1 text-xs font-bold text-white">
-          {tour.days} {t('common.days')}
+          {daysLabel(tour.days, lang)}
         </span>
       </div>
       <div className="flex flex-1 flex-col p-5">
@@ -32,7 +33,7 @@ export function TourCard({ tour }: { tour: Tour }) {
         <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
           <span className="text-sm text-muted">
             {t('common.from')}{' '}
-            <span className="text-lg font-bold text-navy">${tour.priceDouble.toLocaleString()}</span>{' '}
+            <span className="text-lg font-bold text-navy">{fmtPrice(tour.priceDouble, lang)}</span>{' '}
             <span className="text-xs">CAD</span>
           </span>
           <span className="text-sm font-bold text-teal transition group-hover:translate-x-0.5">

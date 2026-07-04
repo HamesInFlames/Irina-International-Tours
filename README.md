@@ -32,7 +32,7 @@ Defined as design tokens in [`src/index.css`](src/index.css).
 ## Features (functional, not connected)
 
 - **Bilingual EN / РУ** — language-select **popup on launch / relaunch**, plus a corner switcher (top bar + floating bottom-right) to swap anytime. State persists in `localStorage`.
-- **Schedule calendar** — interactive month navigation, tour departures on real dates, sold-out and "today" states; click a departure → tour detail.
+- **Schedule** — list-first departure schedule grouped by month (jump-to-month chips, real "today", duration/price/availability in words) with an optional desktop calendar-grid view; Russian weeks start Monday; click a departure → tour detail.
 - **Tour detail + booking request** — sticky price panel and a booking-request modal with validation and a success state.
 - **Contact / Flight / Insurance forms** — validated, with a simulated submit + success confirmation.
 - **Gallery** — album grid with a lightbox; **Feedback** testimonial wall.
