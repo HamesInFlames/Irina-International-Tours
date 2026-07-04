@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext'
-import { daysLabel, fmtPrice } from '../i18n/format'
 import { DEPARTURES, type Departure } from '../data/schedule'
 import { loc, tourById, type Tour } from '../data/tours'
 import { SITE } from '../site'
@@ -44,7 +43,6 @@ export function Calendar() {
   const now = new Date()
   const todayIso = iso(now.getFullYear(), now.getMonth(), now.getDate())
   const [[year, month], setYearMonth] = useState<[number, number]>(initialYearMonth)
-  const [view, setView] = useState<'list' | 'grid'>('list')
 
   const months = lang === 'ru' ? MONTHS_RU : MONTHS_EN
   const dow = lang === 'ru' ? DOW_RU : DOW_EN
@@ -64,7 +62,6 @@ export function Calendar() {
   // tourId doesn't resolve is dropped, so a bad-data month still reads as empty.
   const monthDeps = DEPARTURES
     .filter((d) => d.date.startsWith(monthPrefix))
-    .sort((a, b) => a.date.localeCompare(b.date))
     .map((d) => ({ ...d, tour: tourById(d.tourId) }))
     .filter((d): d is Departure & { tour: Tour } => Boolean(d.tour))
   const empty = monthDeps.length === 0
@@ -75,11 +72,6 @@ export function Calendar() {
   for (let i = 0; i < firstDay; i++) cells.push(null)
   for (let d = 1; d <= daysInMonth; d++) cells.push(d)
   while (cells.length % 7 !== 0) cells.push(null)
-
-  const status = (soldOut?: boolean) =>
-    soldOut
-      ? <span className="font-bold text-coral-dark">{t('common.soldOut')}</span>
-      : <span className="font-bold text-green-700">{t('common.available')}</span>
 
   return (
     <div className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-line">
@@ -96,9 +88,9 @@ export function Calendar() {
         </button>
       </div>
 
-      {/* Jump-to-month chips + view toggle */}
-      <div className="flex items-center gap-3 border-b border-line bg-paper/60 px-3 py-3 sm:px-6">
-        <div role="group" aria-label={t('schedule.jumpTo')} className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-0.5 sm:flex-wrap sm:overflow-visible">
+      {/* Jump-to-month chips */}
+      <div className="border-b border-line bg-paper/60 px-3 py-3 sm:px-6">
+        <div role="group" aria-label={t('schedule.jumpTo')} className="flex gap-2 overflow-x-auto pb-0.5 sm:flex-wrap sm:overflow-visible">
           {MONTHS_WITH_TOURS.map((ym) => {
             const y = parseInt(ym.slice(0, 4), 10)
             const m = parseInt(ym.slice(5), 10) - 1
@@ -117,79 +109,22 @@ export function Calendar() {
             )
           })}
         </div>
-        {/* Grid exists only on ≥sm screens; phones always get the list */}
-        <div className="hidden shrink-0 overflow-hidden rounded-full ring-1 ring-line sm:flex" role="group" aria-label={t('schedule.view')}>
-          {(['list', 'grid'] as const).map((v) => (
-            <button
-              key={v}
-              onClick={() => setView(v)}
-              aria-pressed={view === v}
-              className={`min-h-11 px-4 text-sm font-semibold transition ${view === v ? 'bg-navy text-white' : 'bg-white text-navy hover:bg-navy/5'}`}
-            >
-              {t(v === 'list' ? 'schedule.viewList' : 'schedule.viewGrid')}
-            </button>
-          ))}
-        </div>
       </div>
 
       <AnimatePresence mode="wait">
         <motion.div
-          key={`${year}-${month}-${view}`}
+          key={`${year}-${month}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          {/* Primary view: month-grouped departure list (all screen sizes) */}
-          <div className={view === 'list' ? 'block' : 'sm:hidden'}>
-            {empty ? (
-              <p className="px-4 py-10 text-center text-base text-body">{t('schedule.noDepartures')}</p>
-            ) : (
-              <ul className="divide-y divide-line">
-                {monthDeps.map((dep) => {
-                  const day = parseInt(dep.date.slice(8), 10)
-                  const wd = dow[new Date(year, month, day).getDay()]
-                  const isToday = dep.date === todayIso
-                  return (
-                    <li key={`${dep.date}-${dep.tourId}`}>
-                      <Link
-                        to={`/tour/${dep.tour.id}`}
-                        className={`flex min-h-16 items-center gap-4 px-4 py-3.5 transition hover:bg-paper active:bg-paper sm:px-6 ${isToday ? 'bg-amber-50' : ''}`}
-                      >
-                        <span className={`grid h-14 w-14 shrink-0 place-items-center rounded-xl ${isToday ? 'bg-coral text-white' : 'bg-navy/5 text-navy'}`}>
-                          <span className="text-xl font-bold leading-none">{day}</span>
-                          <span className="mt-0.5 text-[11px] font-semibold uppercase opacity-80">{wd}</span>
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          {isToday && (
-                            <span className="mb-0.5 inline-block rounded bg-coral px-1.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white">
-                              {t('schedule.today')}
-                            </span>
-                          )}
-                          <span className={`block text-base font-bold leading-snug underline underline-offset-2 sm:text-lg ${
-                            dep.soldOut ? 'text-body decoration-body/30' : 'text-navy decoration-navy/40'
-                          }`}>
-                            {loc(dep.tour, lang).name}
-                          </span>
-                          <span className="mt-0.5 block text-sm text-body">
-                            {daysLabel(dep.tour.days, lang)} · {t('common.from')} {fmtPrice(dep.tour.priceDouble, lang)} · {status(dep.soldOut)}
-                          </span>
-                        </span>
-                        <Chevron className="h-5 w-5 shrink-0 text-navy/50" />
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-
-          {/* Secondary view: month grid (desktop toggle only) */}
-          {view === 'grid' && (
-            <div className="hidden sm:block">
-              {empty && (
-                <p className="border-b border-line px-4 py-4 text-center text-base text-body">{t('schedule.noDepartures')}</p>
-              )}
+          {empty && (
+            <p className="border-b border-line px-4 py-4 text-center text-base text-body">{t('schedule.noDepartures')}</p>
+          )}
+          {/* On phones the month grid scrolls sideways so day cells stay readable */}
+          <div className="overflow-x-auto">
+            <div className="min-w-[640px]">
               <div className="grid grid-cols-7 border-b border-line bg-paper text-center text-sm font-bold text-body">
                 {Array.from({ length: 7 }, (_, i) => dow[(i + weekStart) % 7]).map((d) => (
                   <div key={d} className="py-2">{d}</div>
@@ -197,12 +132,12 @@ export function Calendar() {
               </div>
               <div className="grid grid-cols-7">
                 {cells.map((day, i) => {
-                  if (day === null) return <div key={i} className="min-h-28 border-b border-r border-line bg-paper/40" />
+                  if (day === null) return <div key={i} className="min-h-24 border-b border-r border-line bg-paper/40 sm:min-h-28" />
                   const date = iso(year, month, day)
                   const deps = monthDeps.filter((d) => d.date === date)
                   const isToday = date === todayIso
                   return (
-                    <div key={i} className={`min-h-28 border-b border-r border-line p-1.5 align-top ${isToday ? 'bg-amber-50' : 'bg-white'}`}>
+                    <div key={i} className={`min-h-24 border-b border-r border-line p-1.5 align-top sm:min-h-28 ${isToday ? 'bg-amber-50' : 'bg-white'}`}>
                       <div className={`mb-1 inline-flex h-6 w-6 items-center justify-center rounded-full text-sm font-bold ${isToday ? 'bg-coral text-white' : 'text-body'}`}>
                         {day}
                       </div>
@@ -218,7 +153,7 @@ export function Calendar() {
                             }`}
                           >
                             {loc(dep.tour, lang).name}
-                            {dep.soldOut && <> · {status(true)}</>}
+                            {dep.soldOut && <span className="font-bold text-coral-dark"> · {t('common.soldOut')}</span>}
                           </Link>
                         ))}
                       </div>
@@ -227,7 +162,7 @@ export function Calendar() {
                 })}
               </div>
             </div>
-          )}
+          </div>
         </motion.div>
       </AnimatePresence>
 
